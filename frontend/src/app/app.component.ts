@@ -1,13 +1,23 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-
+import { Component, OnInit } from '@angular/core';
+import { MovieService } from './movie/movie.service';  // Adjust path if needed
+import { HttpClientModule } from '@angular/common/http';  // Import necessary modules
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss'],
+  standalone: true,
+  imports: [HttpClientModule]  // Import any necessary modules
 })
-export class AppComponent {
-  title = 'frontend';
+export class AppComponent implements OnInit {
+  title = 'Movie Watchlist';
+  movies: any[] = [];
+
+  constructor(private movieService: MovieService) {}
+
+  ngOnInit(): void {
+    this.movieService.getMovies().subscribe(data => {
+      this.movies = data;
+    });
+  }
 }
+
